@@ -1618,7 +1618,7 @@ static void booke206_update_mas_tlb_miss(CPUPPCState *env, target_ulong address,
 
 /* Perform address translation */
 static int cpu_ppc_handle_mmu_fault(CPUPPCState *env, target_ulong address,
-                                    int rw, int mmu_idx)
+                                    MMUAccessType rw, int mmu_idx)
 {
     CPUState *cs = env_cpu(env);
     PowerPCCPU *cpu = POWERPC_CPU(cs);

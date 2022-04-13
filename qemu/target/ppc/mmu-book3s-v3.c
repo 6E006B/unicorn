@@ -23,7 +23,7 @@
 #include "mmu-book3s-v3.h"
 #include "mmu-radix64.h"
 
-int ppc64_v3_handle_mmu_fault(PowerPCCPU *cpu, vaddr eaddr, int rwx,
+int ppc64_v3_handle_mmu_fault(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType rwx,
                               int mmu_idx)
 {
     if (ppc64_v3_radix(cpu)) { /* Guest uses radix */
