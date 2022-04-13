@@ -85,6 +85,27 @@ static void test_ppc32_sc()
     OK(uc_reg_read(uc, UC_PPC_REG_PC, &r_pc));
 
     TEST_CHECK(r_pc == code_start + 4);
+}
+
+static void test_ppc64_add()
+{
+    uc_engine *uc;
+    char code[] = "\x7f\x46\x1a\x14"; // ADD 26, 6, 3
+    int reg;
+
+    uc_common_setup(&uc, UC_ARCH_PPC, UC_MODE_64 | UC_MODE_BIG_ENDIAN, code,
+                    sizeof(code) - 1);
+
+    reg = 42;
+    OK(uc_reg_write(uc, UC_PPC_REG_3, &reg));
+    reg = 1337;
+    OK(uc_reg_write(uc, UC_PPC_REG_6, &reg));
+
+    OK(uc_emu_start(uc, code_start, code_start + sizeof(code) - 1, 0, 0));
+
+    OK(uc_reg_read(uc, UC_PPC_REG_26, &reg));
+
+    TEST_CHECK(reg == 1379);
 
     OK(uc_close(uc));
 }
@@ -92,4 +113,5 @@ static void test_ppc32_sc()
 TEST_LIST = {{"test_ppc32_add", test_ppc32_add},
              {"test_ppc32_fadd", test_ppc32_fadd},
              {"test_ppc32_sc", test_ppc32_sc},
+             {"test_ppc64_add", test_ppc64_add},
              {NULL, NULL}};
